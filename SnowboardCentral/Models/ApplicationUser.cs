@@ -17,9 +17,8 @@ namespace SnowboardCentral.Models
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
-        [Required]
         [Display(Name = "Username")]
-        public string UserName { get; set; }
+        public string NewUserName { get; set; }
 
         [Required]
         [Display(Name = "Height (inches)")]
@@ -36,11 +35,6 @@ namespace SnowboardCentral.Models
         [Required]
         [Display(Name = "Age")]
         public int Age { get; set; }
-
-        [Required]
-        [EmailAddress]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
 
         public List<ShopReview> ShopReviews { get; set; }
 

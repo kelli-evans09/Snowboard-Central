@@ -98,7 +98,7 @@ namespace SnowboardCentral.Data
             );
 
             //Create three resorts
-            modelBuilder.Entity<Shop>().HasData(
+            modelBuilder.Entity<Resort>().HasData(
                 new Resort()
                 {
                     Id = 1,

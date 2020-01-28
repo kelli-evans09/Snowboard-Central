@@ -56,7 +56,7 @@ namespace SnowboardCentral.Areas.Identity.Pages.Account
 
             [Required]
             [Display(Name = "Username")]
-            public string UserName { get; set; }
+            public string NewUserName { get; set; }
 
             [Required]
             [Display(Name = "Height (inches)")]
@@ -103,9 +103,9 @@ namespace SnowboardCentral.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { 
-                    UserName = Input.UserName,
-                    Email = Input.Email, 
+                var user = new ApplicationUser {
+                    NewUserName = Input.NewUserName,
+                    UserName = Input.Email, 
                     FirstName = Input.FirstName,
                     LastName = Input.LastName,
                     Height = Input.Height,
