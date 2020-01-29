@@ -1,0 +1,68 @@
+﻿@model SnowboardCentral.Models.Shop
+
+@{
+    ViewData["Title"] = "Details";
+}
+<br />
+<br />
+    <h1 class="text-center">@Html.DisplayFor(model => model.Name)</h1>
+<br />
+<div>
+    <h6 class="text-center">@Html.DisplayFor(model => model.Description)</h6>
+    <hr />
+    <br />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.WeekdayHours)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.WeekdayHours)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.WeekendHours)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.WeekendHours)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.RentEquipment)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.RentEquipment)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DailyRentalCost)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DailyRentalCost)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Url)
+        </dt>
+        <dd class="col-sm-10">
+            <a href="@Html.DisplayFor(model => model.Url)" target="_blank">@Html.DisplayFor(model => model.Url)</a>
+        </dd>
+        @*<dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UrlImage)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UrlImage)
+        </dd>*@
+
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
