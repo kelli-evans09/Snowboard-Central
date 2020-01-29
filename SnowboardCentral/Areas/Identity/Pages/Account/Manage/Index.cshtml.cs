@@ -137,9 +137,15 @@ namespace SnowboardCentral.Areas.Identity.Pages.Account.Manage
                 }
             }
 
+            _context.Update(user);
+            await _context.SaveChangesAsync();
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();
+            }
+
+            //await _signInManager.RefreshSignInAsync(user);
+            //StatusMessage = "Your profile has been updated";
+            //return RedirectToPage();
         }
     }
-}
