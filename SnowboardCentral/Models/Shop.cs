@@ -21,6 +21,8 @@ namespace SnowboardCentral.Models
         [Display(Name = "Saturday - Sunday")]
         public string WeekendHours { get; set; }
         public string Description { get; set; }
+
+        [Display(Name = "Rental Equipment Available?")]
         public bool RentEquipment { get; set; }
         public string Url { get; set; }
         public string? UrlImage { get; set; }
