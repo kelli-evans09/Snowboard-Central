@@ -65,17 +65,11 @@ namespace SnowboardCentral.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Experience Level")]
             public int ExperienceLevelId { get; set; }
 
+            public ExperienceLevel Level { get; set; }
+
             [Display(Name = "Age")]
             public int Age { get; set; }
         }
-
-        //private async Task LoadAsync(ApplicationUser user)
-        //{
-        //    var userName = await _userManager.GetUserNameAsync(user);
-        //    var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-
-
-        //}
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -92,7 +86,7 @@ namespace SnowboardCentral.Areas.Identity.Pages.Account.Manage
             var lastName = user.LastName;
             var height = user.Height;
             var weight = user.Weight;
-            var experienceLevel = user.ExperienceLevelId;
+            var experienceLevel = user.Level;
             var age = user.Age;
 
             Username = userName;
@@ -104,7 +98,7 @@ namespace SnowboardCentral.Areas.Identity.Pages.Account.Manage
                 LastName = lastName,
                 Height = height,
                 Weight = weight,
-                ExperienceLevelId = experienceLevel,
+                Level = experienceLevel,
                 Age = age
 
             };

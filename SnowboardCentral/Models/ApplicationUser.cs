@@ -32,6 +32,8 @@ namespace SnowboardCentral.Models
         [Display(Name = "Experience Level")]
         public int ExperienceLevelId { get; set; }
 
+        public ExperienceLevel Level { get; set; }
+
         [Required]
         [Display(Name = "Age")]
         public int Age { get; set; }
