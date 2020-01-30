@@ -26,7 +26,7 @@ namespace SnowboardCentral.Models
         public bool RentEquipment { get; set; }
         public string Url { get; set; }
         public string UrlImage { get; set; }
-        public List<ShopReview> ShopReviews { get; set; }
+        public List<ShopReview> ShopReviews { get; set; } = new List<ShopReview>();
 
         [Display(Name = "Base Rental Price")]
         public double DailyRentalCost { get; set; }

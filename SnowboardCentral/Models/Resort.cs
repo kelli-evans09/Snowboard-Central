@@ -32,6 +32,6 @@ namespace SnowboardCentral.Models
 
         [Display(Name = "Base Price")]
         public double DailyCost { get; set; }
-        public List<ResortReview> ResortReviews { get; set; }
+        public List<ResortReview> ResortReviews { get; set; } = new List<ResortReview>();
     }
 }

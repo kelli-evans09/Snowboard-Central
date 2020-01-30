@@ -7,11 +7,17 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SnowboardCentral.Data;
 using SnowboardCentral.Models;
+using SnowboardCentral.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace SnowboardCentral.Controllers
 {
     public class ResortsController : Controller
     {
+        // Private field to store user manager
+        private readonly UserManager<ApplicationUser> _userManager;
+
         private readonly ApplicationDbContext _context;
 
         public ResortsController(ApplicationDbContext context)
@@ -33,7 +39,7 @@ namespace SnowboardCentral.Controllers
                 return NotFound();
             }
 
-            var resort = await _context.Resorts
+            var resort = await _context.Resorts.Include(r => r.ResortReviews).ThenInclude(r => r.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (resort == null)
             {

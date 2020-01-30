@@ -86,7 +86,7 @@ namespace SnowboardCentral.Areas.Identity.Pages.Account.Manage
             var lastName = user.LastName;
             var height = user.Height;
             var weight = user.Weight;
-            var experienceLevel = user.Level;
+            var experienceLevel = user.ExperienceLevelId;
             var age = user.Age;
 
             Username = userName;
@@ -98,7 +98,7 @@ namespace SnowboardCentral.Areas.Identity.Pages.Account.Manage
                 LastName = lastName,
                 Height = height,
                 Weight = weight,
-                Level = experienceLevel,
+                ExperienceLevelId = experienceLevel,
                 Age = age
 
             };

@@ -7,17 +7,31 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SnowboardCentral.Data;
 using SnowboardCentral.Models;
+using SnowboardCentral.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+
 
 namespace SnowboardCentral.Controllers
 {
     public class ShopsController : Controller
     {
+        // Private field to store user manager
+        private readonly UserManager<ApplicationUser> _userManager;
+
         private readonly ApplicationDbContext _context;
 
         public ShopsController(ApplicationDbContext context)
         {
             _context = context;
         }
+
+        // Inject user manager into constructor
+        //public ShopsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        //{
+        //    _context = context;
+        //    _userManager = userManager;
+        //}
 
         // GET: Shops
         public async Task<IActionResult> Index()
@@ -33,7 +47,7 @@ namespace SnowboardCentral.Controllers
                 return NotFound();
             }
 
-            var shop = await _context.Shops
+            var shop = await _context.Shops.Include(s => s.ShopReviews).ThenInclude(s => s.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (shop == null)
             {
