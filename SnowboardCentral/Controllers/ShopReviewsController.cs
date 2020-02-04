@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,13 +12,24 @@ using SnowboardCentral.Models;
 namespace SnowboardCentral.Controllers
 {
     public class ShopReviewsController : Controller
+
     {
+
+        // Private field to store user manager
+        private readonly UserManager<ApplicationUser> _userManager;
+
         private readonly ApplicationDbContext _context;
 
-        public ShopReviewsController(ApplicationDbContext context)
+        public ShopReviewsController(ApplicationDbContext 
+            context,UserManager<ApplicationUser> userManager)
         {
+            _userManager = userManager;
             _context = context;
         }
+
+        //Private method to get current user
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync
+            (HttpContext.User);
 
         // GET: ShopReviews
         public async Task<IActionResult> Index()
@@ -53,7 +65,6 @@ namespace SnowboardCentral.Controllers
         public IActionResult Create()
         {
             ViewData["ShopId"] = new SelectList(_context.Shops, "Id", "Id");
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
             return View();
         }
 
@@ -64,14 +75,17 @@ namespace SnowboardCentral.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,ShopId,Rating,UserId,DetailReview")] ShopReview shopReview)
         {
+            ModelState.Remove("UserId");
+            ModelState.Remove("User");
             if (ModelState.IsValid)
             {
+                var currentUser = await GetCurrentUserAsync();
+                shopReview.UserId = currentUser.Id;
                 _context.Add(shopReview);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ShopId"] = new SelectList(_context.Shops, "Id", "Id", shopReview.ShopId);
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", shopReview.UserId);
             return View(shopReview);
         }
 
