@@ -13,23 +13,34 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="ShopId" class="control-label"></label>
-                <select asp-for="ShopId" class ="form-control" asp-items="ViewBag.ShopId"></select>
+                <label asp-for="ShopId" class="control-label">Select Shop</label>
+                <select asp-for="ShopId" class="form-control">
+                    <option value="1">Aspen Ski And Board</option>
+                    <option value="2">Colorado Mountain Sports</option>
+                    <option value="3">Zumiez</option>
+                </select>
+                <span asp-validation-for="ShopId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Rating" class="control-label"></label>
-                <input asp-for="Rating" class="form-control" />
+                <label asp-for="Rating" class="control-label">Rating (1-5)</label>
+                <select asp-for="Rating" class="form-control">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
                 <span asp-validation-for="Rating" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="DetailReview" class="control-label"></label>
-                <input asp-for="DetailReview" class="form-control" />
-                <span asp-validation-for="DetailReview" class="text-danger"></span>
-            </div>
+            <label class="control-label">Review Details:</label>
+            @Html.TextAreaFor(m => m.DetailReview, new { @class = "form-control" })
+            <br />
+            @*<div class="form-group">
+            <label asp-for="UserId" class="control-label"></label>
+            <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
+        </div>*@
+            <br />
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -38,7 +49,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a  asp-controller ="Shops" asp-action="Index">Back to Shops</a>
 </div>
 
 @section Scripts {
