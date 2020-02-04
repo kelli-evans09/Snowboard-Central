@@ -1,25 +1,25 @@
-﻿@model SnowboardCentral.Models.ShopReview
+﻿@model SnowboardCentral.Models.ResortReview
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Create";
 }
 
-<h1>Edit</h1>
+<h1>Leave A Review</h1>
 
-@*<h4>ShopReview</h4>*@
+<h4>Tell us how we're doing!</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="ShopId" class="control-label">Select Shop</label>
-                <select asp-for="ShopId" class="form-control">
-                    <option value="1">Aspen Ski And Board</option>
-                    <option value="2">Colorado Mountain Sports</option>
-                    <option value="3">Zumiez</option>
+                <label asp-for="ResortId" class="control-label">Select Resort</label>
+                <select asp-for="ResortId" class="form-control">
+                    <option value="1">Mad River Mountain</option>
+                    <option value="2">Snow Trails</option>
+                    <option value="3">Alpine Valley</option>
                 </select>
-                <span asp-validation-for="ShopId" class="text-danger"></span>
+                <span asp-validation-for="ResortId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Rating" class="control-label">Rating (1-5)</label>
@@ -35,16 +35,20 @@
             <label class="control-label">Review Details:</label>
             @Html.TextAreaFor(m => m.DetailReview, new { @class = "form-control" })
             <br />
+            @*<div class="form-group">
+             <label asp-for="UserId" class="control-label"></label>
+             <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
+        </div>*@
             <br />
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-controller="Shops" asp-action="Index">Back to List</a>
+    <a asp-controller="Resorts" asp-action="Index">Back to Resorts</a>
 </div>
 
 @section Scripts {

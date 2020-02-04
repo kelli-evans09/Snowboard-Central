@@ -176,3 +176,8 @@ C:\Users\newforce\Workspace\capstone-two\SnowboardCentral\SnowboardCentral\obj\D
 C:\Users\newforce\Workspace\capstone-two\SnowboardCentral\SnowboardCentral\obj\Debug\netcoreapp3.0\Razor\Views\ShopReviews\Details.cshtml.g.cs
 C:\Users\newforce\Workspace\capstone-two\SnowboardCentral\SnowboardCentral\obj\Debug\netcoreapp3.0\Razor\Views\ShopReviews\Edit.cshtml.g.cs
 C:\Users\newforce\Workspace\capstone-two\SnowboardCentral\SnowboardCentral\obj\Debug\netcoreapp3.0\Razor\Views\ShopReviews\Index.cshtml.g.cs
+C:\Users\newforce\Workspace\capstone-two\SnowboardCentral\SnowboardCentral\obj\Debug\netcoreapp3.0\Razor\Views\ResortReviews\Create.cshtml.g.cs
+C:\Users\newforce\Workspace\capstone-two\SnowboardCentral\SnowboardCentral\obj\Debug\netcoreapp3.0\Razor\Views\ResortReviews\Delete.cshtml.g.cs
+C:\Users\newforce\Workspace\capstone-two\SnowboardCentral\SnowboardCentral\obj\Debug\netcoreapp3.0\Razor\Views\ResortReviews\Details.cshtml.g.cs
+C:\Users\newforce\Workspace\capstone-two\SnowboardCentral\SnowboardCentral\obj\Debug\netcoreapp3.0\Razor\Views\ResortReviews\Edit.cshtml.g.cs
+C:\Users\newforce\Workspace\capstone-two\SnowboardCentral\SnowboardCentral\obj\Debug\netcoreapp3.0\Razor\Views\ResortReviews\Index.cshtml.g.cs

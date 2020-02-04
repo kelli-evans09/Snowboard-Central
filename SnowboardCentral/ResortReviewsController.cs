@@ -7,46 +7,26 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SnowboardCentral.Data;
 using SnowboardCentral.Models;
-using SnowboardCentral.Models.ViewModels;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 
-
-namespace SnowboardCentral.Controllers
+namespace SnowboardCentral
 {
-    public class ShopsController : Controller
+    public class ResortReviewsController : Controller
     {
-        // Private field to store user manager
-        private readonly UserManager<ApplicationUser> _userManager;
-
         private readonly ApplicationDbContext _context;
 
-        // Inject user manager into constructor
-        public ShopsController(ApplicationDbContext 
-            context,UserManager<ApplicationUser>userManager)
+        public ResortReviewsController(ApplicationDbContext context)
         {
-            _userManager = userManager;
             _context = context;
         }
 
-        //Private method to get current user
-        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync
-            (HttpContext.User);
-
-        // GET: Shops
-        [Authorize]
+        // GET: ResortReviews
         public async Task<IActionResult> Index()
         {
-            var currentUser = await GetCurrentUserAsync();
-            List<Shop> shops = await _context.Shops.Include(s => s.ShopReviews).ThenInclude(s => s.User == currentUser).ToListAsync();
-            return View(shops);
-
-            //var applicationDbContext = _context.Shops.Include(s => s.ShopReviews).ThenInclude(s => s.User);
-            //return View(await _context.Shops.ToListAsync());
+            var applicationDbContext = _context.ResortReviews.Include(r => r.Resort).Include(r => r.User);
+            return View(await applicationDbContext.ToListAsync());
         }
 
-
-        // GET: Shops/Details/5
+        // GET: ResortReviews/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -54,41 +34,45 @@ namespace SnowboardCentral.Controllers
                 return NotFound();
             }
 
-            var shop = await _context.Shops
-                .Include(s => s.ShopReviews)
-                .ThenInclude(s => s.User)
+            var resortReview = await _context.ResortReviews
+                .Include(r => r.Resort)
+                .Include(r => r.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (shop == null)
+            if (resortReview == null)
             {
                 return NotFound();
             }
 
-            return View(shop);
+            return View(resortReview);
         }
 
-        // GET: Shops/Create
+        // GET: ResortReviews/Create
         public IActionResult Create()
         {
+            ViewData["ResortId"] = new SelectList(_context.Resorts, "Id", "Id");
+            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
             return View();
         }
 
-        // POST: Shops/Create
+        // POST: ResortReviews/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Address,PhoneNumber,WeekdayHours,WeekendHours,Description,RentEquipment,Url,UrlImage,DailyRentalCost")] Shop shop)
+        public async Task<IActionResult> Create([Bind("Id,ResortId,Rating,UserId,DetailReview")] ResortReview resortReview)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(shop);
+                _context.Add(resortReview);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(shop);
+            ViewData["ResortId"] = new SelectList(_context.Resorts, "Id", "Id", resortReview.ResortId);
+            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", resortReview.UserId);
+            return View(resortReview);
         }
 
-        // GET: Shops/Edit/5
+        // GET: ResortReviews/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -96,22 +80,24 @@ namespace SnowboardCentral.Controllers
                 return NotFound();
             }
 
-            var shop = await _context.Shops.FindAsync(id);
-            if (shop == null)
+            var resortReview = await _context.ResortReviews.FindAsync(id);
+            if (resortReview == null)
             {
                 return NotFound();
             }
-            return View(shop);
+            ViewData["ResortId"] = new SelectList(_context.Resorts, "Id", "Id", resortReview.ResortId);
+            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", resortReview.UserId);
+            return View(resortReview);
         }
 
-        // POST: Shops/Edit/5
+        // POST: ResortReviews/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Address,PhoneNumber,WeekdayHours,WeekendHours,Description,RentEquipment,Url,UrlImage,DailyRentalCost")] Shop shop)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ResortId,Rating,UserId,DetailReview")] ResortReview resortReview)
         {
-            if (id != shop.Id)
+            if (id != resortReview.Id)
             {
                 return NotFound();
             }
@@ -120,12 +106,12 @@ namespace SnowboardCentral.Controllers
             {
                 try
                 {
-                    _context.Update(shop);
+                    _context.Update(resortReview);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ShopExists(shop.Id))
+                    if (!ResortReviewExists(resortReview.Id))
                     {
                         return NotFound();
                     }
@@ -136,10 +122,12 @@ namespace SnowboardCentral.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(shop);
+            ViewData["ResortId"] = new SelectList(_context.Resorts, "Id", "Id", resortReview.ResortId);
+            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", resortReview.UserId);
+            return View(resortReview);
         }
 
-        // GET: Shops/Delete/5
+        // GET: ResortReviews/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -147,30 +135,32 @@ namespace SnowboardCentral.Controllers
                 return NotFound();
             }
 
-            var shop = await _context.Shops
+            var resortReview = await _context.ResortReviews
+                .Include(r => r.Resort)
+                .Include(r => r.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (shop == null)
+            if (resortReview == null)
             {
                 return NotFound();
             }
 
-            return View(shop);
+            return View(resortReview);
         }
 
-        // POST: Shops/Delete/5
+        // POST: ResortReviews/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var shop = await _context.Shops.FindAsync(id);
-            _context.Shops.Remove(shop);
+            var resortReview = await _context.ResortReviews.FindAsync(id);
+            _context.ResortReviews.Remove(resortReview);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ShopExists(int id)
+        private bool ResortReviewExists(int id)
         {
-            return _context.Shops.Any(e => e.Id == id);
+            return _context.ResortReviews.Any(e => e.Id == id);
         }
     }
 }
