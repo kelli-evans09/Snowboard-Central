@@ -38,11 +38,8 @@ namespace SnowboardCentral.Controllers
         public async Task<IActionResult> Index()
         {
             var currentUser = await GetCurrentUserAsync();
-            List<Shop> shops = await _context.Shops.Include(s => s.ShopReviews).ThenInclude(s => s.User == currentUser).ToListAsync();
-            return View(shops);
-
-            //var applicationDbContext = _context.Shops.Include(s => s.ShopReviews).ThenInclude(s => s.User);
-            //return View(await _context.Shops.ToListAsync());
+            var applicationDbContext = _context.Shops.Include(s => s.ShopReviews).ThenInclude(s => s.User);
+            return View(await _context.Shops.ToListAsync());
         }
 
 
@@ -53,6 +50,7 @@ namespace SnowboardCentral.Controllers
             {
                 return NotFound();
             }
+            
 
             var shop = await _context.Shops
                 .Include(s => s.ShopReviews)

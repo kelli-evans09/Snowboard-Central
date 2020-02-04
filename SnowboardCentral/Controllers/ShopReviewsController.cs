@@ -22,7 +22,10 @@ namespace SnowboardCentral.Controllers
         // GET: ShopReviews
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.ShopReviews.Include(s => s.Shop).Include(s => s.User);
+            var applicationDbContext = _context.ShopReviews
+                .Include(s => s.Shop)
+                .Include(s => s.User)
+                .OrderByDescending(s =>s.Id);
             return View(await applicationDbContext.ToListAsync());
         }
 
