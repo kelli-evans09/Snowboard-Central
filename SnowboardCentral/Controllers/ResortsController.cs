@@ -7,21 +7,39 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SnowboardCentral.Data;
 using SnowboardCentral.Models;
+using SnowboardCentral.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace SnowboardCentral.Controllers
 {
     public class ResortsController : Controller
     {
+        // Private field to store user manager
+        private readonly UserManager<ApplicationUser> _userManager;
+
         private readonly ApplicationDbContext _context;
 
-        public ResortsController(ApplicationDbContext context)
+        // Inject user manager into constructor
+        public ResortsController(ApplicationDbContext
+            context, UserManager<ApplicationUser> userManager)
         {
+            _userManager = userManager;
             _context = context;
         }
+
+        //Private method to get current user
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync
+            (HttpContext.User);
 
         // GET: Resorts
         public async Task<IActionResult> Index()
         {
+            var currentUser = await GetCurrentUserAsync();
+            var applicationDbContext = _context.Resorts
+                .Include(r => r.ResortReviews)
+                .ThenInclude(r => r.User)
+                .OrderByDescending(r => r.Id);
             return View(await _context.Resorts.ToListAsync());
         }
 
@@ -34,7 +52,10 @@ namespace SnowboardCentral.Controllers
             }
 
             var resort = await _context.Resorts
+                .Include(r => r.ResortReviews)
+                .ThenInclude(r => r.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
+            resort.ResortReviews = resort.ResortReviews.OrderByDescending(r => r.Id).ToList();
             if (resort == null)
             {
                 return NotFound();
