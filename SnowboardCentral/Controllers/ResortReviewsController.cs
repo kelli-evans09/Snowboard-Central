@@ -7,22 +7,35 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SnowboardCentral.Data;
 using SnowboardCentral.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace SnowboardCentral
 {
     public class ResortReviewsController : Controller
     {
+        // Private field to store user manager
+        private readonly UserManager<ApplicationUser> _userManager;
+
         private readonly ApplicationDbContext _context;
 
-        public ResortReviewsController(ApplicationDbContext context)
+        public ResortReviewsController(ApplicationDbContext 
+            context,UserManager<ApplicationUser> userManager)
         {
+            _userManager = userManager;
             _context = context;
         }
+
+        //Private method to get current user
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync
+            (HttpContext.User);
 
         // GET: ResortReviews
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.ResortReviews.Include(r => r.Resort).Include(r => r.User);
+            var applicationDbContext = _context.ResortReviews
+                .Include(r => r.Resort)
+                .Include(r => r.User)
+                .OrderByDescending(r => r.Id);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -50,7 +63,6 @@ namespace SnowboardCentral
         public IActionResult Create()
         {
             ViewData["ResortId"] = new SelectList(_context.Resorts, "Id", "Id");
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
             return View();
         }
 
@@ -61,14 +73,17 @@ namespace SnowboardCentral
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,ResortId,Rating,UserId,DetailReview")] ResortReview resortReview)
         {
+            ModelState.Remove("UserId");
+            ModelState.Remove("User");
             if (ModelState.IsValid)
             {
+                var currentUser = await GetCurrentUserAsync();
+                resortReview.UserId = currentUser.Id;
                 _context.Add(resortReview);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ResortId"] = new SelectList(_context.Resorts, "Id", "Id", resortReview.ResortId);
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", resortReview.UserId);
             return View(resortReview);
         }
 

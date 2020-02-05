@@ -37,7 +37,7 @@ namespace SnowboardCentral.Controllers
             var applicationDbContext = _context.ShopReviews
                 .Include(s => s.Shop)
                 .Include(s => s.User)
-                .OrderByDescending(s =>s.Id);
+                .OrderByDescending(s => s.Id);
             return View(await applicationDbContext.ToListAsync());
         }
 
