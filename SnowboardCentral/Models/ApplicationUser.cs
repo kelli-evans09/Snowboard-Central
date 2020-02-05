@@ -41,5 +41,9 @@ namespace SnowboardCentral.Models
         public List<ShopReview> ShopReviews { get; set; }
 
         public List<ResortReview> ResortReviews { get; set; }
+
+        public List<FavoriteShop> FavoriteShops { get; set; }
+
+        //public List<FavoriteResort> FavoriteResorts { get; set; }
     }
 }
