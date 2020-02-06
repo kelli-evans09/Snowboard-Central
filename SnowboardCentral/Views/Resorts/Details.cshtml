@@ -98,10 +98,13 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => item.DetailReview)
         </dd>
+        if (item.User != null && item.User.UserName == User.Identity.Name)
+        {
         <td>
             <a asp-controller="ResortReviews" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
             <a asp-controller="ResortReviews" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
         </td>
+        }
         <hr />
     }
 

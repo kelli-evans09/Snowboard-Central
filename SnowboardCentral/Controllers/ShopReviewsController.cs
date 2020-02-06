@@ -86,7 +86,7 @@ namespace SnowboardCentral.Controllers
                 return RedirectToAction("Index", "Shops");
             }
             ViewData["ShopId"] = new SelectList(_context.Shops, "Id", "Id", shopReview.ShopId);
-            return RedirectToAction(nameof(Details));
+            return RedirectToAction("Index", "Shops");
         }
 
         // GET: ShopReviews/Edit/5
