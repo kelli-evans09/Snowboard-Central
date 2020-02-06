@@ -81,7 +81,7 @@ namespace SnowboardCentral
                 resortReview.UserId = currentUser.Id;
                 _context.Add(resortReview);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Resorts");
+                return RedirectToAction("Details", "Resorts", new { id = resortReview.ResortId });
             }
             ViewData["ResortId"] = new SelectList(_context.Resorts, "Id", "Id", resortReview.ResortId);
             return RedirectToAction("Index", "Resorts");
@@ -139,7 +139,7 @@ namespace SnowboardCentral
                         throw;
                     }
                 }
-                return RedirectToAction("Index", "Resorts");
+                return RedirectToAction("Details", "Resorts", new { id = resortReview.ResortId });
             }
             ViewData["ResortId"] = new SelectList(_context.Resorts, "Id", "Id", resortReview.ResortId);
             ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", resortReview.UserId);
@@ -174,7 +174,7 @@ namespace SnowboardCentral
             var resortReview = await _context.ResortReviews.FindAsync(id);
             _context.ResortReviews.Remove(resortReview);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "Resorts");
+            return RedirectToAction("Details", "Resorts", new { id = resortReview.ResortId });
         }
 
         private bool ResortReviewExists(int id)
