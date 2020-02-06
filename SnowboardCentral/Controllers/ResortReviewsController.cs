@@ -81,10 +81,10 @@ namespace SnowboardCentral
                 resortReview.UserId = currentUser.Id;
                 _context.Add(resortReview);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Resorts");
             }
             ViewData["ResortId"] = new SelectList(_context.Resorts, "Id", "Id", resortReview.ResortId);
-            return View(resortReview);
+            return RedirectToAction("Index", "Resorts");
         }
 
         // GET: ResortReviews/Edit/5
@@ -117,10 +117,14 @@ namespace SnowboardCentral
                 return NotFound();
             }
 
+            ModelState.Remove("UserId");
+            ModelState.Remove("User");
             if (ModelState.IsValid)
             {
                 try
                 {
+                    var currentUser = await GetCurrentUserAsync();
+                    resortReview.UserId = currentUser.Id;
                     _context.Update(resortReview);
                     await _context.SaveChangesAsync();
                 }
@@ -135,7 +139,7 @@ namespace SnowboardCentral
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Resorts");
             }
             ViewData["ResortId"] = new SelectList(_context.Resorts, "Id", "Id", resortReview.ResortId);
             ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", resortReview.UserId);
@@ -170,7 +174,7 @@ namespace SnowboardCentral
             var resortReview = await _context.ResortReviews.FindAsync(id);
             _context.ResortReviews.Remove(resortReview);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Resorts");
         }
 
         private bool ResortReviewExists(int id)
