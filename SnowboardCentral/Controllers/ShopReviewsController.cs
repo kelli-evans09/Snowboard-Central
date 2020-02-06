@@ -83,10 +83,10 @@ namespace SnowboardCentral.Controllers
                 shopReview.UserId = currentUser.Id;
                 _context.Add(shopReview);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Shops");
             }
             ViewData["ShopId"] = new SelectList(_context.Shops, "Id", "Id", shopReview.ShopId);
-            return View(shopReview);
+            return RedirectToAction(nameof(Details));
         }
 
         // GET: ShopReviews/Edit/5
@@ -119,10 +119,15 @@ namespace SnowboardCentral.Controllers
                 return NotFound();
             }
 
+            ModelState.Remove("UserId");
+            ModelState.Remove("User");
             if (ModelState.IsValid)
             {
                 try
                 {
+
+                    var currentUser = await GetCurrentUserAsync();
+                    shopReview.UserId = currentUser.Id;
                     _context.Update(shopReview);
                     await _context.SaveChangesAsync();
                 }
@@ -137,7 +142,7 @@ namespace SnowboardCentral.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Shops");
             }
             ViewData["ShopId"] = new SelectList(_context.Shops, "Id", "Id", shopReview.ShopId);
             ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", shopReview.UserId);
@@ -172,7 +177,7 @@ namespace SnowboardCentral.Controllers
             var shopReview = await _context.ShopReviews.FindAsync(id);
             _context.ShopReviews.Remove(shopReview);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Shops");
         }
 
         private bool ShopReviewExists(int id)
